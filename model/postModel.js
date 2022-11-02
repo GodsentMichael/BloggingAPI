@@ -20,6 +20,11 @@ const postModel = new Schema({
         type: String,
         required: true,
     },
+    //Implementing the one to many mongoose relationship.
+    owner:{
+        type: Schema.Types.ObjectId,
+        ref: "users"
+    },
 
     body:{
         type:String,
@@ -41,7 +46,7 @@ const postModel = new Schema({
      },
     tags: [String],
    
- 
+     
    
 },  {timestamps: true})
 

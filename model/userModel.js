@@ -17,11 +17,7 @@ const UserSchema = new Schema(
       lowercase: true,
       required: [true, "can't be blank"],
     },
-    // username: {
-    //   type: String,
-    //   // required: true,
-    //   unique: true,
-    // },
+   
 
     email: {
       type: String,
@@ -32,11 +28,11 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-
-    article: [
+     // Implementing the one to many mongoose relationship.
+    blogPost: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Posts",
+        ref: "posts",
       },
     ],
   },

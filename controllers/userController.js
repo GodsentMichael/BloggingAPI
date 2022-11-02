@@ -74,3 +74,41 @@ async (email, password, done) => {
         return done(error)
     }
 }))
+
+//Implementing the one-to-many mongoose relationship.
+userController = {
+    //Helps us find the posts by author, title and tags.
+    find: async (req, res)=> {
+    const found1 = await userModel.find({author: req.params.author})
+    res.json(found1)
+    },
+    find: async (req, res)=> {
+    const found2 = await userModel.find({title: req.params.title})
+    res.json(found2)
+    },
+    find: async (req, res)=> {
+    const found3 = await userModel.find({tags: req.params.tags})
+    res.json(found3)
+    },
+    all: async (req, res)=> {
+        const allUser = await userModel.find()
+        res.json(allUser)
+    },
+    create: async( req, res) => {
+        const newUser = userModel.create(req.body)
+        const savedUser = await newUser.save()
+        res.json(savedUser)
+    },
+    getAllPosts: async (req, res)=> {
+        const foundUser1 = await userModel.find({author: req.params.author}).populate("blogPosts")
+        res.json(foundUser1) 
+    
+        const foundUser2 = await userModel.find({title: req.params.title}).populate("blogPosts")
+        res.json(foundUser2) 
+        // const foundUser3 = await userModel.findOne({tags: req.params.tags}, undefined, { populate: {path: 'blogPosts', options: {strictPopulate: false}} })
+        const foundUser3 = await userModel.find({tags: req.params.tags}).populate("blogPosts")
+        res.json(foundUser3)  
+      }
+}
+
+module.exports = userController
