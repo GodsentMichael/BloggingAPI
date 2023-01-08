@@ -59,5 +59,5 @@ postModel.pre('validate', function(next){
 
     next()
 })
-// 
+
 module.exports = mongoose.model('Posts', postModel)

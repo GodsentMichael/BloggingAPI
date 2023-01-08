@@ -43,7 +43,7 @@ describe('Auth: Signup', () => {
 
 
     it('should login a user', async () => {
-        // create user in out db
+        // create user in db
         const user = await UserModel.create({ username: 'chinuaachebe', password: 'achebe123'});
 
         // login user

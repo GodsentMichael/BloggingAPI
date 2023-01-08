@@ -33,8 +33,6 @@ passport.use( new JWTStrategy({
                 try {
                     const first_name = req.body.first_name
                     const last_name = req.body.last_name
-                    // const email = req.body.email
-                    // const password = req.body.password
                     const user = await userModel.create({ first_name, last_name, email, password });
     
                     return done(null, user);
@@ -105,7 +103,7 @@ userController = {
     
         const foundUser2 = await userModel.find({title: req.params.title}).populate("blogPosts")
         res.json(foundUser2) 
-        // const foundUser3 = await userModel.findOne({tags: req.params.tags}, undefined, { populate: {path: 'blogPosts', options: {strictPopulate: false}} })
+
         const foundUser3 = await userModel.find({tags: req.params.tags}).populate("blogPosts")
         res.json(foundUser3)  
       }

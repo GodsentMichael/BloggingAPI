@@ -67,7 +67,7 @@ describe("posts Route", () => {
     expect(response.body).toHaveProperty("status", true);
   });
 
-  it("should return postss with state draft", async () => {
+  it("should return posts with state draft", async () => {
     // create order in our db
     await OrderModel.create({
       title: "Half a Yellow sun",

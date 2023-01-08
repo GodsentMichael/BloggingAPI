@@ -1,6 +1,11 @@
 const express = require("express");
 const { connectToMongoDB } = require("./db");
 const passport = require('passport')
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet')
+const winston = require('winston')
+const logger = require('./logger/logger')
+const httpLogger = require('./logger/httpLogger')
 const bodyParser = require('body-parser')
 const mongoose = require("mongoose");
 const userModel = require('././model/userModel')
@@ -17,10 +22,29 @@ const PORT = 5000;
 
 //connecting to MonGoDB Instance
 connectToMongoDB();
+
+// Defaults to in-memory store.
+// You can use redis or any other store.
+const limiter = rateLimit({
+  windowMs: 0.5 * 60 * 1000, // 15 minutes
+  max: 4, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+//add secuirty
+app.use(helmet());
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
+
+// Apply the rate limiting middleware to API calls only
+// app.use('/api', apiLimiter)
+
+app.use(express.static('public'));
 app.use(express.json())
 // app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 // app.use(methodOverride("_method"));
 
@@ -30,10 +54,6 @@ app.use('/',userRoute);
 app.use('/signup', passport.authenticate('jwt', { session: false }),userRoute);
 app.use('/login', passport.authenticate('jwt', { session: false }),userRoute);
 app.use('/posts',postRoute);
-//Unauthenticated route, to get all published blogs by logged in unlogged-in users.
-
-
-
 
 //Home route
 app.get('/', (req, res) => {
