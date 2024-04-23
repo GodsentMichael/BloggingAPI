@@ -10,7 +10,6 @@ const { query } = require("express");
 const createBlogPost = async (req, res, next) => {
   try {
     const user = await userModel.findById(req.user._id)
-    console.log("user =>", user);
     if(user){
       
       // Algorithm for calculating read_time.
@@ -24,7 +23,7 @@ const createBlogPost = async (req, res, next) => {
       }
       
       const readTime = read_time();
-      console.log("readTime =>",readTime);
+      // console.log("readTime =>",readTime);
       const blogPostCreated = {
         title: req.body.title,
         
@@ -109,7 +108,7 @@ const updateBlogPost = async (req, res)=>{
     
 
     let blogPost = await postModel.findById(id)
-    console.log("blogPost =>", blogPost)
+    // console.log("blogPost =>", blogPost)
     
     
     if(!blogPost){
@@ -126,7 +125,7 @@ const updateBlogPost = async (req, res)=>{
 
 const deleteBlogPost = async (req, res) =>{
     const { id } = req.params
-    console.log("ID =>", id);
+    // console.log("ID =>", id);
 
     const blogPost = await postModel.deleteOne({_id : id})
 
